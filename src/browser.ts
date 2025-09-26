@@ -10,14 +10,16 @@ import path from 'node:path';
 
 import type {
   Browser,
-  ChromeReleaseChannel,
   ConnectOptions,
   LaunchOptions,
   Target,
 } from 'puppeteer-core';
 import puppeteer from 'puppeteer-core';
 
-import {findBraveExecutable, isValidBraveExecutable} from './utils/braveDetection.js';
+import {
+  findBraveExecutable,
+  isValidBraveExecutable,
+} from './utils/braveDetection.js';
 
 let browser: Browser | undefined;
 
@@ -89,18 +91,18 @@ export async function launch(options: McpLaunchOptions): Promise<Browser> {
     args.push(`--custom-devtools-frontend=file://${customDevTools}`);
   }
   let resolvedExecutablePath = executablePath;
-  
+
   if (!resolvedExecutablePath) {
     // Try to find Brave executable automatically
     resolvedExecutablePath = findBraveExecutable();
     if (!resolvedExecutablePath) {
       throw new Error(
-        'Brave browser not found. Please install Brave or specify the executable path using --executablePath'
+        'Brave browser not found. Please install Brave or specify the executable path using --executablePath',
       );
     }
   } else if (!isValidBraveExecutable(resolvedExecutablePath)) {
     throw new Error(
-      `The specified executable path does not appear to be a valid Brave browser: ${resolvedExecutablePath}`
+      `The specified executable path does not appear to be a valid Brave browser: ${resolvedExecutablePath}`,
     );
   }
 

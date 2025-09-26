@@ -7,13 +7,13 @@ control and inspect a live Brave browser. It acts as a Model-Context-Protocol
 (MCP) server, giving your AI coding assistant access to the full power of
 Brave DevTools for reliable automation, in-depth debugging, and performance analysis.
 
-
 ## Recommended settings for vibe coding
 
 1. Set Up Brave to open your default browser profile as the browser used for MCP to debug ( so you havea all your passwords and plugins and such )
 
 - Close all Brave instanes
 - Copy and run this in terminal / cli etc
+
 ```bash
 /Applications/Brave\ Browser.app/Contents/MacOS/Brave\ Browser \
   --remote-debugging-port=9222 \
@@ -241,7 +241,6 @@ The DevTools MCP server supports the following configuration options:
   If specified, creates a temporary user-data-dir that is automatically cleaned up after the browser is closed.
   - **Type:** boolean
   - **Default:** `false`
-
 
 - **`--logFile`**
   Path to a file to write debug logs to. Set the env variable `DEBUG` to `*` to enable verbose logs. Useful for submitting bug reports.

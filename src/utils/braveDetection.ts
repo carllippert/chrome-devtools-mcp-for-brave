@@ -14,12 +14,18 @@ import path from 'node:path';
 const BRAVE_PATHS = {
   darwin: [
     '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser',
-    path.join(os.homedir(), 'Applications/Brave Browser.app/Contents/MacOS/Brave Browser'),
+    path.join(
+      os.homedir(),
+      'Applications/Brave Browser.app/Contents/MacOS/Brave Browser',
+    ),
   ],
   win32: [
     'C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe',
     'C:\\Program Files (x86)\\BraveSoftware\\Brave-Browser\\Application\\brave.exe',
-    path.join(os.homedir(), 'AppData\\Local\\BraveSoftware\\Brave-Browser\\Application\\brave.exe'),
+    path.join(
+      os.homedir(),
+      'AppData\\Local\\BraveSoftware\\Brave-Browser\\Application\\brave.exe',
+    ),
   ],
   linux: [
     '/usr/bin/brave-browser',
@@ -27,7 +33,10 @@ const BRAVE_PATHS = {
     '/opt/brave.com/brave/brave-browser',
     '/snap/bin/brave',
     '/var/lib/flatpak/app/com.brave.Browser/current/active/export/bin/com.brave.Browser',
-    path.join(os.homedir(), '.local/share/flatpak/app/com.brave.Browser/current/active/export/bin/com.brave.Browser'),
+    path.join(
+      os.homedir(),
+      '.local/share/flatpak/app/com.brave.Browser/current/active/export/bin/com.brave.Browser',
+    ),
   ],
 };
 
@@ -52,7 +61,7 @@ export function findBraveExecutable(): string | undefined {
           return executablePath;
         }
       }
-    } catch (error) {
+    } catch {
       // Continue to next path if this one fails
       continue;
     }
@@ -85,7 +94,7 @@ export function isValidBraveExecutable(executablePath: string): boolean {
     // Basic filename check - should contain 'brave' (case insensitive)
     const filename = path.basename(executablePath).toLowerCase();
     return filename.includes('brave');
-  } catch (error) {
+  } catch {
     return false;
   }
 }
