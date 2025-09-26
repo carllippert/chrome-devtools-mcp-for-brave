@@ -27,7 +27,7 @@
     "LICENSE",
     "!*.tsbuildinfo"
   ],
-  "repository": "carllippert/brave-devtools-mcp",
+  "repository": "carllippert/chrome-devtools-mcp-for-brave",
   "author": "Google LLC",
   "license": "Apache-2.0",
   "bugs": {
