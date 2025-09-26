@@ -1,11 +1,42 @@
-# Chrome DevTools MCP
+# Brave DevTools MCP
 
-[![npm chrome-devtools-mcp package](https://img.shields.io/npm/v/chrome-devtools-mcp.svg)](https://npmjs.org/package/chrome-devtools-mcp)
+[![npm chrome-devtools-mcp-for-brave package](https://img.shields.io/npm/v/chrome-devtools-mcp-for-brave.svg)](https://npmjs.org/package/chrome-devtools-mcp-for-brave)
 
-`chrome-devtools-mcp` lets your coding agent (such as Gemini, Claude, Cursor or Copilot)
-control and inspect a live Chrome browser. It acts as a Model-Context-Protocol
+`chrome-devtools-mcp-for-brave` lets your coding agent (such as Gemini, Claude, Cursor or Copilot)
+control and inspect a live Brave browser. It acts as a Model-Context-Protocol
 (MCP) server, giving your AI coding assistant access to the full power of
-Chrome DevTools for reliable automation, in-depth debugging, and performance analysis.
+Brave DevTools for reliable automation, in-depth debugging, and performance analysis.
+
+
+## Recommended settings for vibe coding
+
+1. Set Up Brave to open your default browser profile as the browser used for MCP to debug ( so you havea all your passwords and plugins and such )
+
+- Close all Brave instanes
+- Copy and run this in terminal / cli etc
+```bash
+/Applications/Brave\ Browser.app/Contents/MacOS/Brave\ Browser \
+  --remote-debugging-port=9222 \
+  --user-data-dir="$HOME/Library/Application Support/BraveSoftware/Brave-Browser" \
+  --profile-directory="Default"
+```
+
+2. Set up MCP with correct args for using this browser window
+
+```json
+{
+  "mcpServers": {
+    "brave-devtools": {
+      "command": "npx",
+      "args": [
+        "chrome-devtools-mcp-for-brave@latest",
+        "--browserUrl",
+        "http://127.0.0.1:9222"
+      ]
+    }
+  }
+}
+```
 
 ## Key features
 
@@ -16,11 +47,12 @@ Chrome DevTools for reliable automation, in-depth debugging, and performance ana
   check the browser console.
 - **Reliable automation**. Uses
   [puppeteer](https://github.com/puppeteer/puppeteer) to automate actions in
-  Chrome and automatically wait for action results.
+  Brave and automatically wait for action results.
+- **Brave-optimized**: Designed specifically for Brave browser with automatic detection.
 
 ## Disclaimers
 
-`chrome-devtools-mcp` exposes content of the browser instance to the MCP clients
+`chrome-devtools-mcp-for-brave` exposes content of the browser instance to the MCP clients
 allowing them to inspect, debug, and modify any data in the browser or DevTools.
 Avoid sharing sensitive or personal information that you don't want to share with
 MCP clients.
@@ -28,7 +60,7 @@ MCP clients.
 ## Requirements
 
 - [Node.js 22.12.0](https://nodejs.org/) or newer.
-- [Chrome](https://www.google.com/chrome/) current stable version or newer.
+- [Brave Browser](https://brave.com/) current stable version or newer.
 - [npm](https://www.npmjs.com/).
 
 ## Getting started
@@ -38,16 +70,16 @@ Add the following config to your MCP client:
 ```json
 {
   "mcpServers": {
-    "chrome-devtools": {
+    "brave-devtools": {
       "command": "npx",
-      "args": ["chrome-devtools-mcp@latest"]
+      "args": ["chrome-devtools-mcp-for-brave@latest"]
     }
   }
 }
 ```
 
 > [!NOTE]  
-> Using `chrome-devtools-mcp@latest` ensures that your MCP client will always use the latest version of the Chrome DevTools MCP server.
+> Using `chrome-devtools-mcp-for-brave@latest` ensures that your MCP client will always use the latest version of the Brave DevTools MCP server.
 
 ### MCP Client configuration
 
@@ -56,7 +88,7 @@ Add the following config to your MCP client:
     Use the Claude Code CLI to add the Chrome DevTools MCP server (<a href="https://docs.anthropic.com/en/docs/claude-code/mcp">guide</a>):
 
 ```bash
-claude mcp add chrome-devtools npx chrome-devtools-mcp@latest
+claude mcp add brave-devtools npx chrome-devtools-mcp-for-brave@latest
 ```
 
 </details>
@@ -72,7 +104,7 @@ claude mcp add chrome-devtools npx chrome-devtools-mcp@latest
   using the standard config from above. You can also install the Chrome DevTools MCP server using the Codex CLI:
 
 ```bash
-codex mcp add chrome-devtools -- npx chrome-devtools-mcp@latest
+codex mcp add brave-devtools -- npx chrome-devtools-mcp-for-brave@latest
 ```
 
 </details>
@@ -83,7 +115,7 @@ codex mcp add chrome-devtools -- npx chrome-devtools-mcp@latest
   with the standard config from above. You can also install the Chrome DevTools MCP server using the VS Code CLI:
   
   ```bash
-  code --add-mcp '{"name":"chrome-devtools","command":"npx","args":["chrome-devtools-mcp@latest"]}'
+  code --add-mcp '{"name":"brave-devtools","command":"npx","args":["chrome-devtools-mcp-for-brave@latest"]}'
   ```
 </details>
 
@@ -92,7 +124,7 @@ codex mcp add chrome-devtools -- npx chrome-devtools-mcp@latest
 
 **Click the button to install:**
 
-[<img src="https://cursor.com/deeplink/mcp-install-dark.svg" alt="Install in Cursor">](https://cursor.com/en/install-mcp?name=chrome-devtools&config=eyJjb21tYW5kIjoibnB4IGNocm9tZS1kZXZ0b29scy1tY3BAbGF0ZXN0In0%3D)
+[<img src="https://cursor.com/deeplink/mcp-install-dark.svg" alt="Install Brave DevTools in Cursor">](https://cursor.com/en/install-mcp?name=brave-devtools&config=eyJjb21tYW5kIjoibnB4IGNocm9tZS1kZXZ0b29scy1tY3AtZm9yLWJyYXZlQGxhdGVzdCJ9)
 
 **Or install manually:**
 
@@ -107,13 +139,13 @@ Install the Chrome DevTools MCP server using the Gemini CLI.
 **Project wide:**
 
 ```bash
-gemini mcp add chrome-devtools npx chrome-devtools-mcp@latest
+gemini mcp add brave-devtools npx chrome-devtools-mcp-for-brave@latest
 ```
 
 **Globally:**
 
 ```bash
-gemini mcp add -s user chrome-devtools npx chrome-devtools-mcp@latest
+gemini mcp add -s user brave-devtools npx chrome-devtools-mcp-for-brave@latest
 ```
 
 Alternatively, follow the <a href="https://github.com/google-gemini/gemini-cli/blob/main/docs/tools/mcp-server.md#how-to-set-up-your-mcp-server">MCP guide</a> and use the standard config from above.
@@ -145,7 +177,7 @@ Check the performance of https://developers.chrome.com
 Your MCP client should open the browser and record a performance trace.
 
 > [!NOTE]  
-> The MCP server will start the browser automatically once the MCP client uses a tool that requires a running browser instance. Connecting to the Chrome DevTools MCP server on its own will not automatically start the browser.
+> The MCP server will start the browser automatically once the MCP client uses a tool that requires a running browser instance. Connecting to the DevTools MCP server on its own will not automatically start the browser.
 
 ## Tools
 
@@ -188,12 +220,12 @@ Your MCP client should open the browser and record a performance trace.
 
 ## Configuration
 
-The Chrome DevTools MCP server supports the following configuration option:
+The DevTools MCP server supports the following configuration options:
 
 <!-- BEGIN AUTO GENERATED OPTIONS -->
 
 - **`--browserUrl`, `-u`**
-  Connect to a running Chrome instance using port forwarding. For more details see: https://developer.chrome.com/docs/devtools/remote-debugging/local-server.
+  Connect to a running Brave instance using port forwarding. For more details see: https://developer.chrome.com/docs/devtools/remote-debugging/local-server.
   - **Type:** string
 
 - **`--headless`**
@@ -202,7 +234,7 @@ The Chrome DevTools MCP server supports the following configuration option:
   - **Default:** `false`
 
 - **`--executablePath`, `-e`**
-  Path to custom Chrome executable.
+  Path to custom Brave executable.
   - **Type:** string
 
 - **`--isolated`**
@@ -210,10 +242,6 @@ The Chrome DevTools MCP server supports the following configuration option:
   - **Type:** boolean
   - **Default:** `false`
 
-- **`--channel`**
-  Specify a different Chrome channel that should be used. The default is the stable channel version.
-  - **Type:** string
-  - **Choices:** `stable`, `canary`, `beta`, `dev`
 
 - **`--logFile`**
   Path to a file to write debug logs to. Set the env variable `DEBUG` to `*` to enable verbose logs. Useful for submitting bug reports.
@@ -226,11 +254,10 @@ Pass them via the `args` property in the JSON configuration. For example:
 ```json
 {
   "mcpServers": {
-    "chrome-devtools": {
+    "brave-devtools": {
       "command": "npx",
       "args": [
-        "chrome-devtools-mcp@latest",
-        "--channel=canary",
+        "chrome-devtools-mcp-for-brave@latest",
         "--headless=true",
         "--isolated=true"
       ]
@@ -239,20 +266,19 @@ Pass them via the `args` property in the JSON configuration. For example:
 }
 ```
 
-You can also run `npx chrome-devtools-mcp@latest --help` to see all available configuration options.
+You can also run `npx chrome-devtools-mcp-for-brave@latest --help` to see all available configuration options.
 
 ## Concepts
 
 ### User data directory
 
-`chrome-devtools-mcp` starts a Chrome's stable channel instance using the following user
-data directory:
+The MCP server uses the following user data directory for Brave:
 
-- Linux / MacOS: `$HOME/.cache/chrome-devtools-mcp/chrome-profile-$CHANNEL`
-- Window: `%HOMEPATH%/.cache/chrome-devtools-mcp/chrome-profile-$CHANNEL`
+- Linux / MacOS: `$HOME/.cache/brave-devtools-mcp/brave-profile`
+- Windows: `%HOMEPATH%/.cache/brave-devtools-mcp/brave-profile`
 
 The user data directory is not cleared between runs and shared across
-all instances of `chrome-devtools-mcp`. Set the `isolated` option to `true`
+all instances of the MCP server. Set the `isolated` option to `true`
 to use a temporary user data dir instead which will be cleared automatically after
 the browser is closed.
 
@@ -261,8 +287,8 @@ the browser is closed.
 ### Operating system sandboxes
 
 Some MCP clients allow sandboxing the MCP server using macOS Seatbelt or Linux
-containers. If sandboxes are enabled, `chrome-devtools-mcp` is not able to start
-Chrome that requires permissions to create its own sandboxes. As a workaround,
-either disable sandboxing for `chrome-devtools-mcp` in your MCP client or use
-`--connect-url` to connect to a Chrome instance that you start manually outside
+containers. If sandboxes are enabled, the MCP server is not able to start
+Brave as it requires permissions to create its own sandboxes. As a workaround,
+either disable sandboxing for the MCP server in your MCP client or use
+`--browserUrl` to connect to a Brave instance that you start manually outside
 of the MCP client sandbox.

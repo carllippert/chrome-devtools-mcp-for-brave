@@ -11,7 +11,7 @@ export const cliOptions = {
   browserUrl: {
     type: 'string' as const,
     description:
-      'Connect to a running Chrome instance using port forwarding. For more details see: https://developer.chrome.com/docs/devtools/remote-debugging/local-server.',
+      'Connect to a running Brave instance using port forwarding. For more details see: https://developer.chrome.com/docs/devtools/remote-debugging/local-server.',
     alias: 'u',
     coerce: (url: string) => {
       new URL(url);
@@ -25,7 +25,7 @@ export const cliOptions = {
   },
   executablePath: {
     type: 'string' as const,
-    description: 'Path to custom Chrome executable.',
+    description: 'Path to custom Brave executable.',
     conflicts: 'browserUrl',
     alias: 'e',
   },
@@ -42,13 +42,6 @@ export const cliOptions = {
     conflicts: 'browserUrl',
     alias: 'd',
   },
-  channel: {
-    type: 'string' as const,
-    description:
-      'Specify a different Chrome channel that should be used. The default is the stable channel version.',
-    choices: ['stable', 'canary', 'beta', 'dev'] as const,
-    conflicts: ['browserUrl', 'executablePath'],
-  },
   logFile: {
     type: 'string' as const,
     describe:
@@ -58,7 +51,7 @@ export const cliOptions = {
 
 export function parseArguments(version: string, argv = process.argv) {
   const yargsInstance = yargs(hideBin(argv))
-    .scriptName('npx chrome-devtools-mcp@latest')
+    .scriptName('npx chrome-devtools-mcp-for-brave@latest')
     .options(cliOptions)
     .check(args => {
       // We can't set default in the options else

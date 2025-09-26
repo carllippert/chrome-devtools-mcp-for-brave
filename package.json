@@ -1,7 +1,7 @@
 {
-  "name": "chrome-devtools-mcp",
+  "name": "chrome-devtools-mcp-for-brave",
   "version": "0.4.0",
-  "description": "MCP server for Chrome DevTools",
+  "description": "MCP server for Brave DevTools",
   "type": "module",
   "bin": "./build/src/index.js",
   "main": "index.js",
@@ -27,14 +27,14 @@
     "LICENSE",
     "!*.tsbuildinfo"
   ],
-  "repository": "ChromeDevTools/chrome-devtools-mcp",
+  "repository": "carllippert/brave-devtools-mcp",
   "author": "Google LLC",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/ChromeDevTools/chrome-devtools-mcp/issues"
+    "url": "https://github.com/carllippert/chrome-devtools-mcp-for-brave/issues"
   },
-  "homepage": "https://github.com/ChromeDevTools/chrome-devtools-mcp#readme",
-  "mcpName": "io.github.ChromeDevTools/chrome-devtools-mcp",
+  "homepage": "https://github.com/carllippert/chrome-devtools-mcp-for-brave#readme",
+  "mcpName": "io.github.carllippert/chrome-devtools-mcp-for-brave",
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.18.1",
     "debug": "4.4.3",

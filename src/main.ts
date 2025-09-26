@@ -13,7 +13,6 @@ import {StdioServerTransport} from '@modelcontextprotocol/sdk/server/stdio.js';
 import type {CallToolResult} from '@modelcontextprotocol/sdk/types.js';
 import {SetLevelRequestSchema} from '@modelcontextprotocol/sdk/types.js';
 
-import type {Channel} from './browser.js';
 import {resolveBrowser} from './browser.js';
 import {parseArguments} from './cli.js';
 import {logger, saveLogsToFile} from './logger.js';
@@ -39,7 +38,7 @@ function readPackageJson(): {version?: string} {
   }
   try {
     const json = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
-    assert.strict(json['name'], 'chrome-devtools-mcp');
+    assert.strict(json['name'], 'chrome-devtools-mcp-for-brave');
     return json;
   } catch {
     return {};
@@ -52,11 +51,11 @@ export const args = parseArguments(version);
 
 const logFile = args.logFile ? saveLogsToFile(args.logFile) : undefined;
 
-logger(`Starting Chrome DevTools MCP Server v${version}`);
+logger(`Starting Brave DevTools MCP Server v${version}`);
 const server = new McpServer(
   {
-    name: 'chrome_devtools',
-    title: 'Chrome DevTools MCP server',
+    name: 'brave_devtools',
+    title: 'Brave DevTools MCP server',
     version,
   },
   {capabilities: {logging: {}}},
@@ -72,7 +71,6 @@ async function getContext(): Promise<McpContext> {
     headless: args.headless,
     executablePath: args.executablePath,
     customDevTools: args.customDevtools,
-    channel: args.channel as Channel,
     isolated: args.isolated,
     logFile,
   });
@@ -84,7 +82,7 @@ async function getContext(): Promise<McpContext> {
 
 const logDisclaimers = () => {
   console.error(
-    `chrome-devtools-mcp exposes content of the browser instance to the MCP clients allowing them to inspect,
+    `brave-devtools-mcp exposes content of the browser instance to the MCP clients allowing them to inspect,
 debug, and modify any data in the browser or DevTools.
 Avoid sharing sensitive or personal information that you do not want to share with MCP clients.`,
   );
@@ -156,5 +154,5 @@ for (const tool of tools) {
 
 const transport = new StdioServerTransport();
 await server.connect(transport);
-logger('Chrome DevTools MCP Server connected');
+logger('Brave DevTools MCP Server connected');
 logDisclaimers();

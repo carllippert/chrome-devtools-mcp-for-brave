@@ -17,21 +17,23 @@ import type {
 } from 'puppeteer-core';
 import puppeteer from 'puppeteer-core';
 
+import {findBraveExecutable, isValidBraveExecutable} from './utils/braveDetection.js';
+
 let browser: Browser | undefined;
 
 const ignoredPrefixes = new Set([
-  'chrome://',
-  'chrome-extension://',
-  'chrome-untrusted://',
+  'brave://',
+  'brave-extension://',
   'devtools://',
 ]);
 
 function targetFilter(target: Target): boolean {
-  if (target.url() === 'chrome://newtab/') {
+  const url = target.url();
+  if (url === 'brave://newtab/') {
     return true;
   }
   for (const prefix of ignoredPrefixes) {
-    if (target.url().startsWith(prefix)) {
+    if (url.startsWith(prefix)) {
       return false;
     }
   }
@@ -59,7 +61,6 @@ async function ensureBrowserConnected(browserURL: string) {
 interface McpLaunchOptions {
   executablePath?: string;
   customDevTools?: string;
-  channel?: Channel;
   userDataDir?: string;
   headless: boolean;
   isolated: boolean;
@@ -67,18 +68,15 @@ interface McpLaunchOptions {
 }
 
 export async function launch(options: McpLaunchOptions): Promise<Browser> {
-  const {channel, executablePath, customDevTools, headless, isolated} = options;
-  const profileDirName =
-    channel && channel !== 'stable'
-      ? `chrome-profile-${channel}`
-      : 'chrome-profile';
+  const {executablePath, customDevTools, headless, isolated} = options;
+  const profileDirName = 'brave-profile';
 
   let userDataDir = options.userDataDir;
   if (!isolated && !userDataDir) {
     userDataDir = path.join(
       os.homedir(),
       '.cache',
-      'chrome-devtools-mcp',
+      'brave-devtools-mcp',
       profileDirName,
     );
     await fs.promises.mkdir(userDataDir, {
@@ -90,19 +88,26 @@ export async function launch(options: McpLaunchOptions): Promise<Browser> {
   if (customDevTools) {
     args.push(`--custom-devtools-frontend=file://${customDevTools}`);
   }
-  let puppeterChannel: ChromeReleaseChannel | undefined;
-  if (!executablePath) {
-    puppeterChannel =
-      channel && channel !== 'stable'
-        ? (`chrome-${channel}` as ChromeReleaseChannel)
-        : 'chrome';
+  let resolvedExecutablePath = executablePath;
+  
+  if (!resolvedExecutablePath) {
+    // Try to find Brave executable automatically
+    resolvedExecutablePath = findBraveExecutable();
+    if (!resolvedExecutablePath) {
+      throw new Error(
+        'Brave browser not found. Please install Brave or specify the executable path using --executablePath'
+      );
+    }
+  } else if (!isValidBraveExecutable(resolvedExecutablePath)) {
+    throw new Error(
+      `The specified executable path does not appear to be a valid Brave browser: ${resolvedExecutablePath}`
+    );
   }
 
   try {
     const browser = await puppeteer.launch({
       ...connectOptions,
-      channel: puppeterChannel,
-      executablePath,
+      executablePath: resolvedExecutablePath,
       defaultViewport: null,
       userDataDir,
       pipe: true,
@@ -148,7 +153,6 @@ export async function resolveBrowser(options: {
   browserUrl?: string;
   executablePath?: string;
   customDevTools?: string;
-  channel?: Channel;
   headless: boolean;
   isolated: boolean;
   logFile?: fs.WriteStream;
@@ -160,4 +164,4 @@ export async function resolveBrowser(options: {
   return browser;
 }
 
-export type Channel = 'stable' | 'canary' | 'beta' | 'dev';
+// Channel type removed - not applicable to Brave
